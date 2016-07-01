@@ -1,0 +1,28 @@
+opam-version: "1.2"
+name: "uwt-cohttp"
+version: "0.0.1"
+maintainer: "andreashauptmann@t-online.de"
+authors: [ "andreashauptmann@t-online.de" ]
+homepage: "https://github.com/fdopen/uwt-random"
+dev-repo: "https://github.com/fdopen/uwt-random.git"
+bug-reports: "https://github.com/fdopen/uwt-random/issues"
+build: [["omake" "lib"]]
+install: [["omake" "install"]]
+build-test: [["omake" "test"]]
+remove: [[ "ocamlfind" "remove" "uwt-cohttp" ]]
+available: [ocaml-version >= "4.02.1"]
+depends: [
+  "uwt" {> "0.0.2"}
+  "uwt-conduit"
+  "magic-mime"
+  "sexplib"
+  "ppx_sexp_conv"
+  "cohttp" {>= "0.21.0" & < "0.22"}
+  "ocamlfind" {build}
+  "omake" {build}
+  "ounit" {test & >= "2.0"}
+  "alcotest" {test}
+]
+depopts: [
+  "uwt-tls"
+]

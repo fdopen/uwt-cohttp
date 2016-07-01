@@ -1,0 +1,19 @@
+version = "0.0.1"
+description = "Resolve URIs into Lwt channels under Unix"
+requires = "cohttp.lwt-core uwt-conduit magic-mime sexplib uwt.ext"
+archive(byte) = "uwt-cohttp.cma"
+archive(byte, plugin) = "uwt-cohttp.cma"
+archive(native) = "uwt-cohttp.cmxa"
+archive(native, plugin) = "uwt-cohttp.cmxs"
+exists_if = "uwt-cohttp.cma"
+
+package "compat" (
+ version = "0.0.1"
+ description = "compat mode for uwt-cohttp"
+ requires = "uwt-cohttp"
+ archive(byte) = "uwt-cohttp-compat.cma"
+ archive(byte, plugin) = "uwt-cohttp-compat.cma"
+ archive(native) = "uwt-cohttp-compat.cmxa"
+ archive(native, plugin) = "uwt-cohttp-compat.cmxs"
+ exists_if = "uwt-cohttp-compat.cma"
+)

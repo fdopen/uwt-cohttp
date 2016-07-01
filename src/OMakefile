@@ -1,0 +1,29 @@
+.DEFAULT: lib
+.PHONY: clean all distclean doc lib install uninstall
+
+OCAMLPACKS+= cohttp.lwt-core uwt-conduit magic-mime sexplib ppx_sexp_conv uwt.ext
+section
+	#OCAMLPACKS+= uwt conduit.lwt sexplib sexplib.syntax camlp4.macro
+	MLFILES= cohttp_uwt_io cohttp_uwt_debug cohttp_uwt_net cohttp_uwt
+	Repeat_targets($(MLFILES))
+	COHTTP=$(MOCamlLibrary uwt-cohttp, $(MLFILES))
+	lib:: $(COHTTP)
+	export COHTTP
+
+section
+	MLFILES= cohttp_uwt_compat
+	Repeat_targets($(MLFILES))
+	COMPAT=$(MOCamlLibrary uwt-cohttp-compat, $(MLFILES))
+	lib:: $(COMPAT)
+	export COMPAT
+
+Install_helper($(PROJNAME),$(COMPAT) $(COHTTP))
+
+clean::
+	clean-helper()
+	rm -f oUnit*.log setup.data setup.log *.tar*
+
+distclean:: clean
+	rm -f *~
+
+all:: lib

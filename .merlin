@@ -1,0 +1,14 @@
+PRJ conduit-uwt
+S src
+B src
+S test
+B test
+S examples
+B examples
+PKG oUnit
+PKG sexplib
+PKG uwt.ext
+PKG cohttp.lwt-core
+PKG uwt-conduit
+PKG magic-mime
+PKG alcotest

@@ -1,0 +1,49 @@
+.PHONY: test clean build-tests btest all
+.DEFAULT: build-tests
+
+#OCAMLPACKS+= lwt bigarray unix threads lwt.log oUnit ppx_import ppx_deriving.show
+#OCAMLFLAGS+= -thread
+OCAMLFLAGS= -g -bin-annot -safe-string
+OCAMLINCLUDES[]+= ../src
+OCAMLFINDFLAGS+= -syntax camlp4o -open Uwt_compat -open Cohttp_uwt_compat -open Conduit_uwt_compat
+OCAML_LIBS+= ../src/uwt-cohttp ../src/uwt-cohttp-compat
+OCAMLPACKS+= cohttp.lwt-core uwt.compat uwt-conduit.compat magic-mime sexplib lwt.syntax uwt.ext oUnit alcotest
+
+testprog(FILES,run)=
+	Repeat_targets($(FILES))
+	PROG=$(nth 0, $(FILES))
+	TEST_PROG=$(OCamlProgram $(PROG),$(FILES))
+	build-tests:: $(TEST_PROG)
+	clean::
+		rm -f $(PROG)$(EXE)
+	if $(equal $(run),true)
+		test:: $(PROG)$(EXE)
+			./$(PROG)$(EXE)
+		btest:: $(PROG)
+			./$(PROG).run
+
+section
+	#no fork: test_net_lwt_client_and_server
+	FILES_RUN= test_net_lwt_lastminute test_net_lwt_google
+	FILES_NORUN= test_net_lwt_server test_net_lwt_multi_get
+	TLS_FILES= test_net_lwt_google_custom_ctx test_net_lwt
+	if $(equal $(HAVE_TLS), true)
+		export
+		FILES_RUN+= $(TLS_FILES)
+	else
+		export
+		FILES_NORUN+= $(TLS_FILES)
+	foreach(f,$(FILES_RUN))
+		testprog($(f),true)
+	foreach(f,$(FILES_NORUN))
+		testprog($(f),false)
+
+clean::
+	clean-helper()
+	rm -f *.tar* *.cache *.log *.data
+	rm -rf _tests
+
+distclean:: clean
+	rm -f *~ .*~
+
+all:: build-tests

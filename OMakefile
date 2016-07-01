@@ -1,0 +1,42 @@
+.PHONY: clean all distclean install uninstall lib test examples
+
+VERSION=0.0.1
+PROJNAME=uwt-cohttp
+USE_OCAMLFIND= true
+BYTE_ENABLED=	true
+
+static.=
+	UWT_DIR=$(shella $(OCAMLFIND) query uwt)
+	HAVE_TLS=
+		t=$(shell-code $(OCAMLFIND) query uwt-tls)
+		value $(if $(equal $(t),0), true, false)
+
+
+
+if $(not $(equal $(getenv DEBUG_MY_CODE, $(EMPTY)), $(EMPTY)))
+	export
+	OCAMLFLAGS= -g -bin-annot -safe-string -w A-4 #-32-33-37-39-48-4 -warn-error A-32-33-37-39-48-4
+else
+	export
+	OCAMLFLAGS= -g -bin-annot -safe-string
+
+include OMakeIncludes
+
+.DEFAULT: all
+.SUBDIRS: src examples tests
+
+#ConfReplace(_oasis)
+
+#setup.ml: _oasis
+#	oasis setup
+
+clean::
+	clean-helper()
+	rm -f oUnit*.log setup.data setup.log
+
+distclean:: clean
+	rm -f *~ .*~ setup.ml _oasis *.xz *.gz
+
+.PHONY: echo-pkg
+echo-pkg:
+	@echo $(PROJNAME)-$(VERSION)

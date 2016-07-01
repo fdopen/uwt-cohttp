@@ -1,0 +1,25 @@
+.PHONY: all examples
+.DEFAULT: examples
+
+example(f)=
+	OCAMLPACKS+= cohttp.lwt-core uwt.compat uwt-conduit magic-mime sexplib uri cmdliner
+	OCAMLINCLUDES[]+= ../src
+	OCAML_LIBS+= ../src/uwt-cohttp
+	Repeat_targets($(f))
+	prog=$(nth 0, $(f))
+	TEST_PROG=$(OCamlProgram $(prog),$(f))
+	examples:: $(TEST_PROG)
+	clean::
+		rm -f $(prog)$(EXE)
+
+example(cohttp_server cohttp_server_uwt)
+example(cohttp_curl_lwt)
+
+clean::
+	clean-helper()
+	rm -f oUnit*.log setup.data setup.log *.tar*
+
+distclean:: clean
+	rm -f *~ .*~
+
+all: examples
