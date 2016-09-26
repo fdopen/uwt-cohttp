@@ -5,9 +5,9 @@
 #OCAMLFLAGS+= -thread
 OCAMLFLAGS= -g -bin-annot -safe-string
 OCAMLINCLUDES[]+= ../src
-OCAMLFINDFLAGS+= -syntax camlp4o -open Uwt_compat -open Cohttp_uwt_compat -open Conduit_uwt_compat
+OCAMLFINDFLAGS+= -open Uwt_compat -open Cohttp_uwt_compat -open Conduit_uwt_compat
 OCAML_LIBS+= ../src/uwt-cohttp ../src/uwt-cohttp-compat
-OCAMLPACKS+= cohttp.lwt-core uwt.compat uwt-conduit.compat magic-mime sexplib lwt.syntax uwt.ext oUnit alcotest
+OCAMLPACKS+= cohttp.lwt-core uwt.compat uwt-conduit.compat magic-mime sexplib uwt.ext oUnit alcotest
 
 testprog(FILES,run)=
 	Repeat_targets($(FILES))
