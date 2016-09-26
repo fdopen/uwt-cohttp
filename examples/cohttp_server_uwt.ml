@@ -41,7 +41,7 @@ let file_exists f =
   Lwt.catch ( fun () ->
       Uwt.Fs.stat f >>= fun _ -> return_true )
     (function
-    | Uwt.Uwt_error(Uwt.ENOENT,_,_) -> return_false
+    | Unix.Unix_error(Unix.ENOENT,_,_) -> return_false
     | x -> Lwt.fail x )
 
 let serve ~info ~docroot ~index uri path =
@@ -79,7 +79,7 @@ let serve ~info ~docroot ~index uri path =
         ~body:(html_of_forbidden_unnormal path info)
         ()
   ) (function
-  | Uwt.Uwt_error(Uwt.ENOENT, "stat", p) as e ->
+  | Unix.Unix_error(Unix.ENOENT, "stat", p) as e ->
     if p = file_name
     then Server.respond_string ~status:`Not_found
       ~body:(html_of_not_found path info)

@@ -78,7 +78,7 @@ module Server = struct
       let res = Cohttp.Response.make ~status:`OK ~encoding ~headers () in
       return (res, body)
     ) (function
-      | Uwt.Uwt_error(Uwt.ENOENT,_,_) | Isnt_a_file ->
+      | Unix.Unix_error(Unix.ENOENT,_,_) | Isnt_a_file ->
         respond_not_found ()
       | exn ->
         let body = Printexc.to_string exn in
@@ -88,96 +88,3 @@ module Server = struct
     Conduit_uwt.serve ?timeout ?stop ~ctx:ctx.Cohttp_uwt_net.ctx ~mode
       (callback spec)
 end
-
-
-(*
-module type C = sig
-  include Cohttp_lwt.Client
-    with module IO = Cohttp_uwt_io
-     and type ctx = Cohttp_uwt_net.ctx
-  val custom_ctx: ?ctx:Conduit_uwt.ctx -> ?resolver:Resolver_lwt.t -> unit -> ctx
-
-end
-
-module Client = struct
-  include
-    Cohttp_lwt.Make_client
-      (Cohttp_uwt_io)(Cohttp_uwt_net)
-
-  let custom_ctx = Cohttp_uwt_net.init
-end
-
-module Server_core = Cohttp_lwt.Make_server (Cohttp_uwt_io)
-
-module Server = struct
-  include Server_core
-  open Lwt
-
-  let blank_uri = Uri.of_string ""
-
-  let resolve_file ~docroot ~uri =
-    (* This normalises the Uri and strips out .. characters *)
-    let frag = Uri.path (Uri.resolve "" blank_uri uri) in
-    Filename.concat docroot frag
-
-  let buffer_size = 16384
-
-  exception Isnt_a_file
-  let respond_file ?headers ~fname () =
-    Lwt.catch (fun () ->
-      (* Check this isnt a directory first *)
-      (Uwt.Fs.stat fname >>= fun s ->
-      if Uwt.Fs.(s.st_kind <> S_REG) then fail Isnt_a_file
-      else return_unit) >>= fun () ->
-      let buffer = Uwt_bytes.create buffer_size in
-      Uwt_io.open_file ~buffer ~mode:Uwt_io.input fname >>= fun ic ->
-      Uwt_io.length ic >>= fun len ->
-      let encoding = Cohttp.Transfer.Fixed len in
-      let stream = Lwt_stream.from (fun () ->
-        Lwt.catch (fun () ->
-          Uwt_io.read ~count:buffer_size ic >|= function
-          | "" -> None
-          | buf -> Some buf)
-          (fun exn ->
-             Uwt_log.ign_debug ~exn ("Error resolving file " ^ fname);
-             return_none)
-        )
-      in
-      Lwt_stream.on_terminate stream (fun () ->
-          Lwt.ignore_result (Uwt_io.close ic));
-      let body = Cohttp_lwt_body.of_stream stream in
-      let mime_type = Magic_mime.lookup fname in
-      let headers = Cohttp.Header.add_opt_unless_exists headers "content-type" mime_type in
-      let res = Cohttp.Response.make ~status:`OK ~encoding ~headers () in
-      return (res, body)
-    ) (function
-      | Uwt.Uwt_error(Uwt.ENOENT,_,_) | Isnt_a_file ->
-        respond_not_found ()
-      | exn ->
-        let body = Printexc.to_string exn in
-        respond_error ~status:`Internal_server_error ~body ())
-
-  let create ?timeout ?stop ?(ctx=Cohttp_uwt_net.default_ctx) ?(mode=`TCP (`Port 8080)) spec =
-    Conduit_uwt.serve ?timeout ?stop ~ctx:ctx.Cohttp_uwt_net.ctx ~mode
-      (callback spec)
-end
-
-module type S = sig
-  include Cohttp_lwt.Server with module IO = Cohttp_uwt_io
-
-  val resolve_file :
-    docroot:string -> uri:Uri.t -> string
-
-  val respond_file :
-    ?headers:Cohttp.Header.t ->
-    fname:string -> unit ->
-    (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
-
-  val create :
-    ?timeout:int ->
-    ?stop:unit Lwt.t ->
-    ?ctx:Cohttp_uwt_net.ctx ->
-    ?mode:Conduit_uwt.server -> t -> unit Lwt.t
-
-end
-*)
