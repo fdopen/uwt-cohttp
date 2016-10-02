@@ -37,4 +37,5 @@ tests/test_net_lwt_google_custom_ctx
 tests/test_net_lwt_lastminute
 tests/test_net_lwt_multi_get
 tests/test_net_lwt_server
+tests/test_sanity
 tests/_tests

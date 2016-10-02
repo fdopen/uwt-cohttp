@@ -31,7 +31,7 @@ let make_server () =
     let src_info =
       match ch with
       | CLU.TCP {CLU.fd; ip; port} -> begin
-          match Uwt.Tcp.getpeername_exn fd |> Uwt.Conv.to_unix_sockaddr_exn with
+          match Uwt.Tcp.getpeername_exn fd with
           | Unix.ADDR_INET (ia,port) ->
               sprintf "%s:%d" (Ipaddr.to_string (Ipaddr_unix.of_inet_addr ia)) port
           | Unix.ADDR_UNIX path -> sprintf "sock:%s" path

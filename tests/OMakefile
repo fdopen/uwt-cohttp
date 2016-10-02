@@ -38,6 +38,10 @@ section
 	foreach(f,$(FILES_NORUN))
 		testprog($(f),false)
 
+section
+	FILES=test_sanity cohttp_test cohttp_uwt_test
+	testprog($(FILES),true)
+
 clean::
 	clean-helper()
 	rm -f *.tar* *.cache *.log *.data

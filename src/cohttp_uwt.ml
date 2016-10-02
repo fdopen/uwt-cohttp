@@ -80,9 +80,7 @@ module Server = struct
     ) (function
       | Unix.Unix_error(Unix.ENOENT,_,_) | Isnt_a_file ->
         respond_not_found ()
-      | exn ->
-        let body = Printexc.to_string exn in
-        respond_error ~status:`Internal_server_error ~body ())
+      | exn -> Lwt.fail exn )
 
   let create ?timeout ?stop ?(ctx=Cohttp_uwt_net.default_ctx) ?(mode=`TCP (`Port 8080)) spec =
     Conduit_uwt.serve ?timeout ?stop ~ctx:ctx.Cohttp_uwt_net.ctx ~mode

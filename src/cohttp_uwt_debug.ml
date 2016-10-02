@@ -26,6 +26,6 @@ let () =
    match Sys.getenv "COHTTP_DEBUG" with
    | "false" | "0" -> ()
    | _ ->
-     debug_print "Cohttp debugging output is active";
+     debug_print "Cohttp debugging output is active\n";
      debug_active := true
   ) with Not_found -> ()
