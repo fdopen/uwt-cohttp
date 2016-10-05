@@ -17,7 +17,7 @@ section
 	lib:: $(COMPAT)
 	export COMPAT
 
-Install_helper($(PROJNAME),$(COMPAT) $(COHTTP))
+Install_helper($(PROJNAME),$(COMPAT) $(COHTTP), $(EMPTY))
 
 clean::
 	clean-helper()
