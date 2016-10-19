@@ -3,9 +3,9 @@ name: "uwt-cohttp"
 version: "0.0.1"
 maintainer: "andreashauptmann@t-online.de"
 authors: [ "andreashauptmann@t-online.de" ]
-homepage: "https://github.com/fdopen/uwt-random"
-dev-repo: "https://github.com/fdopen/uwt-random.git"
-bug-reports: "https://github.com/fdopen/uwt-random/issues"
+homepage: "https://github.com/fdopen/uwt-cohttp"
+dev-repo: "https://github.com/fdopen/uwt-cohttp.git"
+bug-reports: "https://github.com/fdopen/uwt-cohttp/issues"
 build: [["omake" "lib"]]
 install: [["omake" "install"]]
 build-test: [["omake" "test"]]
@@ -25,4 +25,5 @@ depends: [
 ]
 depopts: [
   "uwt-tls"
+  "uwt-ssl"
 ]

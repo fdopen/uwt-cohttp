@@ -1,8 +1,6 @@
 .PHONY: test clean build-tests btest all
 .DEFAULT: build-tests
 
-#OCAMLPACKS+= lwt bigarray unix threads lwt.log oUnit ppx_import ppx_deriving.show
-#OCAMLFLAGS+= -thread
 OCAMLFLAGS= -g -bin-annot -safe-string
 OCAMLINCLUDES[]+= ../src
 OCAMLFINDFLAGS+= -open Uwt_compat -open Cohttp_uwt_compat -open Conduit_uwt_compat
@@ -27,7 +25,7 @@ section
 	FILES_RUN= test_net_lwt_lastminute test_net_lwt_google
 	FILES_NORUN= test_net_lwt_server test_net_lwt_multi_get
 	TLS_FILES= test_net_lwt_google_custom_ctx test_net_lwt
-	if $(equal $(HAVE_TLS), true)
+	if $(or $(equal $(HAVE_TLS), true), $(equal $(HAVE_SSL), true))
 		export
 		FILES_RUN+= $(TLS_FILES)
 	else
