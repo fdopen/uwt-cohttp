@@ -160,4 +160,14 @@ let ts =
   end
 
 
-let _ = ts |> run_async_tests |> Uwt.Main.run
+let () =
+  let res = ts |> run_async_tests |> Uwt.Main.run in
+  let open OUnit in
+  let f = function
+  | RSuccess _
+  | RSkip _ -> false
+  | RFailure _
+  | RError _
+  | RTodo _ -> true
+  in
+  exit (if List.exists f res then 1 else 0)
