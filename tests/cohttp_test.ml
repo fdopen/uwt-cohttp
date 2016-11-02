@@ -15,12 +15,16 @@ module type S = sig
   val run_async_tests : OUnit.test io -> OUnit.test_results io
 end
 
-let port = ref 9193
+let rs = Random.State.make_self_init ()
+let ports_used = Hashtbl.create 10
 
-let next_port () =
-  let current_port = !port in
-  incr port;
-  current_port
+let rec next_port () =
+  let n = Random.State.int rs (24576 - 4096) + 4096 in
+  if Hashtbl.mem ports_used n then
+    next_port ()
+  else
+    let () = Hashtbl.replace ports_used n () in
+    n
 
 let response_sequence fail responses =
   let xs = ref responses in
