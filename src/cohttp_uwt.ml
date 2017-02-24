@@ -82,7 +82,8 @@ module Server = struct
         respond_not_found ()
       | exn -> Lwt.fail exn )
 
-  let create ?timeout ?stop ?(ctx=Cohttp_uwt_net.default_ctx) ?(mode=`TCP (`Port 8080)) spec =
-    Conduit_uwt.serve ?timeout ?stop ~ctx:ctx.Cohttp_uwt_net.ctx ~mode
+  let create ?timeout ?stop ?on_exn ?(ctx=Cohttp_uwt_net.default_ctx)
+      ?(mode=`TCP (`Port 8080)) spec =
+    Conduit_uwt.serve ?timeout ?on_exn ?stop ~ctx:ctx.Cohttp_uwt_net.ctx ~mode
       (callback spec)
 end

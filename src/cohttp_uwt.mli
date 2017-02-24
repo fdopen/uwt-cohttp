@@ -70,6 +70,7 @@ module Server : sig
   val create :
     ?timeout:int ->
     ?stop:unit Lwt.t ->
+    ?on_exn:(exn -> unit) ->
     ?ctx:Cohttp_uwt_net.ctx ->
     ?mode:Conduit_uwt.server -> t -> unit Lwt.t
 end
