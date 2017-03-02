@@ -15,10 +15,18 @@ testprog(FILES,run)=
 	clean::
 		rm -f $(PROG)$(EXE)
 	if $(equal $(run),true)
-		test:: $(PROG)$(EXE)
-			./$(PROG)$(EXE)
-		btest:: $(PROG)
-			./$(PROG).run
+		if $(and $(equal $(HAVE_TLS),true), $(equal $(HAVE_SSL),true))
+			test:: $(PROG)$(EXE)
+				env CONDUIT_TLS=native ./$(PROG)$(EXE)
+				env CONDUIT_TLS=ssl ./$(PROG)$(EXE)
+			btest:: $(PROG)
+				env CONDUIT_TLS=native ./$(PROG).run
+				env CONDUIT_TLS=ssl ./$(PROG).run
+		else
+			test:: $(PROG)$(EXE)
+				./$(PROG)$(EXE)
+			btest:: $(PROG)
+				./$(PROG).run
 
 section
 	#no fork: test_net_lwt_client_and_server
