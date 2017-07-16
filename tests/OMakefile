@@ -8,6 +8,7 @@ OCAML_LIBS+= ../src/uwt-cohttp ../src/uwt-cohttp-compat
 OCAMLPACKS+= cohttp.lwt-core uwt.compat uwt-conduit.compat magic-mime sexplib uwt.ext oUnit alcotest
 
 testprog(FILES,run)=
+	OCAML_BYTE_LINK_FLAGS=
 	Repeat_targets($(FILES))
 	PROG=$(nth 0, $(FILES))
 	TEST_PROG=$(OCamlProgram $(PROG),$(FILES))
