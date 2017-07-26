@@ -6,10 +6,10 @@ S examples
 B examples
 PKG oUnit
 PKG sexplib
-PKG uwt.ext
+PKG uwt
 PKG uwt-tls
 PKG uwt-ssl
-PKG cohttp.lwt-core
+PKG cohttp-lwt
 PKG uwt-conduit
 PKG magic-mime
 PKG alcotest

@@ -12,18 +12,14 @@ build-test: [["omake" "test"]]
 remove: [[ "ocamlfind" "remove" "uwt-cohttp" ]]
 available: [ocaml-version >= "4.02.1"]
 depends: [
-  "uwt" {> "0.0.2"}
+  "uwt" {> "0.2.0"}
   "uwt-conduit"
   "magic-mime"
   "sexplib"
   "ppx_sexp_conv"
-  "cohttp" {>= "0.21.0"}
+  "cohttp-lwt"
   "ocamlfind" {build}
   "omake" {build}
   "ounit" {test & >= "2.0"}
   "alcotest" {test}
-]
-depopts: [
-  "uwt-tls"
-  "uwt-ssl"
 ]

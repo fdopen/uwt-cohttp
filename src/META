@@ -1,6 +1,6 @@
 version = "0.0.1"
 description = "Resolve URIs into Lwt channels under Unix"
-requires = "cohttp.lwt-core uwt-conduit magic-mime sexplib uwt.ext"
+requires = "cohttp-lwt uwt uwt-conduit magic-mime sexplib"
 archive(byte) = "uwt-cohttp.cma"
 archive(byte, plugin) = "uwt-cohttp.cma"
 archive(native) = "uwt-cohttp.cmxa"

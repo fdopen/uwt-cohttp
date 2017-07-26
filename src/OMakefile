@@ -1,7 +1,7 @@
 .DEFAULT: lib
 .PHONY: clean all distclean doc lib install uninstall
 
-OCAMLPACKS+= cohttp.lwt-core uwt-conduit magic-mime sexplib ppx_sexp_conv uwt.ext
+OCAMLPACKS+= cohttp-lwt uwt-conduit magic-mime sexplib ppx_sexp_conv
 section
 	#OCAMLPACKS+= uwt conduit.lwt sexplib sexplib.syntax camlp4.macro
 	MLFILES= cohttp_uwt_io cohttp_uwt_debug cohttp_uwt_net cohttp_uwt
