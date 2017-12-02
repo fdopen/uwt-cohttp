@@ -4,7 +4,7 @@ open Cohttp
 open Cohttp_uwt
 open Cohttp_uwt_test
 
-module Body = Cohttp_lwt_body
+module Body = Cohttp_lwt.Body
 
 let message = "Hello sanity!"
 
@@ -44,7 +44,7 @@ let server =
     | true -> []
     | false -> [
         (fun _ body -> (* Returns 500 on bad file *)
-           Cohttp_lwt_body.to_string body >>= fun fname ->
+           Cohttp_lwt.Body.to_string body >>= fun fname ->
            Server.respond_file ~fname ())]
     in
     tests @ unix_only @
@@ -146,7 +146,7 @@ let ts =
           assert_equal (Response.status resp_head) `OK;
           Client.get uri >>= fun (resp_get, body) ->
           assert_equal (Response.status resp_get) `OK;
-          Cohttp_lwt_body.drain_body body) stream ()
+          Cohttp_lwt.Body.drain_body body) stream ()
     in
     [ "sanity test", t
     ; "empty chunk test", empty_chunk

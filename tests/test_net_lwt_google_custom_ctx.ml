@@ -36,7 +36,7 @@ let () =
     Lwt_main.run (
       Cohttp_lwt_unix.Client.get ~ctx (Uri.of_string uri)
       >>= fun (r,b) ->
-      Cohttp_lwt_body.to_string b
+      Cohttp_lwt.Body.to_string b
     ) in
 
   prerr_endline (fetch "https://google.com");

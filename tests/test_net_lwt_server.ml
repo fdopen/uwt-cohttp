@@ -43,7 +43,7 @@ let make_server () =
     match Uri.path uri with
     |""|"/" -> Server.respond_string ~status:`OK ~body:"helloworld" ()
     |"/post" -> begin
-       Cohttp_lwt_body.to_string body >>= fun body ->
+       Cohttp_lwt.Body.to_string body >>= fun body ->
        Server.respond_string ~status:`OK ~body ()
     end
     |"/postnodrain" -> begin
@@ -53,7 +53,7 @@ let make_server () =
        let headers = Header.init_with "content-type" "text/event-stream" in
        let headers = Header.add headers "cache-control" "no-cache" in
        let st,push_st = Lwt_stream.create () in
-       let body = Cohttp_lwt_body.of_stream st in
+       let body = Cohttp_lwt.Body.of_stream st in
        let cur_time () =
          let tod = Unix.gettimeofday () in
          let tm = Unix.localtime tod in
