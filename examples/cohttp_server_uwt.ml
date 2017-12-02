@@ -20,7 +20,6 @@
 open Printf
 
 open Lwt
-open Cohttp
 open Cohttp_uwt
 
 open Cohttp_server

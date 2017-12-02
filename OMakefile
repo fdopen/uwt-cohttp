@@ -14,12 +14,21 @@ static.=
 		t=$(shell-code $(OCAMLFIND) query uwt-ssl)
 		value $(if $(equal $(t),0), true, false)
 
-if $(not $(equal $(getenv DEBUG_MY_CODE, $(EMPTY)), $(EMPTY)))
+if $(equal $(BYTE_ENABLED), true)
 	export
-	OCAMLFLAGS= -g -bin-annot -safe-string -w A-4 #-32-33-37-39-48-4 -warn-error A-32-33-37-39-48-4
+	OCAMLCFLAGS= -g -bin-annot
+	OCAMLOPTFLAGS= -g
 else
 	export
-	OCAMLFLAGS= -g -bin-annot -safe-string
+	OCAMLCFLAGS= -g
+	OCAMLOPTFLAGS= -g -bin-annot
+
+if $(not $(equal $(getenv DEBUG_MY_CODE, $(EMPTY)), $(EMPTY)))
+	export
+	OCAMLFLAGS= -strict-sequence -principal -safe-string -w A-3-4 -warn-error +1..49-3-4-45-27-42-44
+else
+	export
+	OCAMLFLAGS= -safe-string -warn-error +1..49-3-4-27-42-44
 
 include OMakeIncludes
 
