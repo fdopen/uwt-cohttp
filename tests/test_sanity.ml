@@ -53,6 +53,10 @@ let server =
          Server.respond_string ~status:`OK ~body:"no leak" ()) |> Array.to_list))
   |> response_sequence
 
+let info f =
+  let x : unit Lwt.t = Logs_lwt.info f in
+  Lwt.ignore_result x
+
 let ts =
   Cohttp_uwt_test.test_server_s server begin fun uri ->
     let t () =
@@ -101,12 +105,12 @@ let ts =
       Client.callv uri reqs >>= fun resps ->
       let resps = Lwt_stream.map_s (fun (_, b) -> Body.to_string b) resps in
       Lwt_stream.fold (fun b i ->
-        Lwt_log.ign_info_f "Request %i\n" i;
+        info (fun f -> f "Request %i\n" i);
         begin match i with
         | 0 -> assert_equal b "one"
         | 1 ->
           assert_equal b "two";
-          Lwt_log.ign_info "Sending extra request";
+          info (fun f -> f "Sending extra request");
           push (Some (r 3))
         | 2 ->
           assert_equal b "three";

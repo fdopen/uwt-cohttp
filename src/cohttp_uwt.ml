@@ -66,8 +66,10 @@ module Server = struct
           | "" -> None
           | buf -> Some buf)
           (fun exn ->
-             Uwt_log.ign_debug ~exn ("Error resolving file " ^ fname);
-             return_none)
+            Logs_lwt.debug (fun f ->
+                f "Error resolving file %s (%s)" fname (Printexc.to_string exn))
+            |> Lwt.ignore_result;
+            return_none)
         )
       in
       Lwt_stream.on_terminate stream (fun () ->

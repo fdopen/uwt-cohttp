@@ -5,7 +5,7 @@ OCAMLFLAGS= -g -bin-annot -safe-string
 OCAMLINCLUDES[]+= ../src
 OCAMLFINDFLAGS+= -open Uwt_compat -open Cohttp_uwt_compat -open Conduit_uwt_compat
 OCAML_LIBS+= ../src/uwt-cohttp ../src/uwt-cohttp-compat
-OCAMLPACKS+= cohttp-lwt uwt.compat uwt-conduit.compat magic-mime sexplib oUnit alcotest
+OCAMLPACKS+= cohttp-lwt uwt.compat uwt-conduit.compat magic-mime sexplib oUnit alcotest logs.lwt
 
 testprog(FILES,run)=
 	OCAML_BYTE_LINK_FLAGS=

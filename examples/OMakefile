@@ -3,7 +3,7 @@
 
 example(f)=
 	OCAML_BYTE_LINK_FLAGS=
-	OCAMLPACKS+= cohttp.lwt-core uwt.compat uwt-conduit magic-mime sexplib uri cmdliner
+	OCAMLPACKS+= cohttp.lwt-core uwt.compat uwt-conduit magic-mime sexplib uri cmdliner logs.lwt
 	OCAMLINCLUDES[]+= ../src
 	OCAML_LIBS+= ../src/uwt-cohttp
 	Repeat_targets($(f))
